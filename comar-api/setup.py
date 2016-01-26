@@ -49,10 +49,10 @@ if "dist" in sys.argv:
 
 class Install(install):
     def finalize_options(self):
-        # NOTE: for Pardus distribution
-        if os.path.exists("/etc/pardus-release"):
-            self.install_platlib = '$base/lib/pardus'
-            self.install_purelib = '$base/lib/pardus'
+        # NOTE: for Pisilinux distribution
+        if os.path.exists("/etc/pisilinux-release"):
+            self.install_platlib = '$base/lib/pisilinux'
+            self.install_purelib = '$base/lib/pisilinux'
         install.finalize_options(self)
     
     def run(self):
@@ -63,7 +63,7 @@ setup(
     name = 'comar',
     version = version,
     description = 'COMAR API Functions',
-    url = 'http://www.pardus.org.tr/projeler/comar',
+    url = 'http://www.pisilinux.org',
     license = 'GNU GPL2',
     package_dir = { '': '' },
     packages = [ 'comar' ],
