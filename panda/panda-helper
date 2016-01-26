@@ -29,7 +29,7 @@ def main(args):
 
 def argument():
     '''Command line parser'''
-    parser = argparse.ArgumentParser(description='Pardus Alternative Driver Administration',
+    parser = argparse.ArgumentParser(description='Pisilinux Alternative Driver Administration',
                                      prog='panda',
                                      usage='%(prog)s [options]')
 

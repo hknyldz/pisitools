@@ -22,7 +22,7 @@ kernel_file_pae = "/etc/kernel/kernel-pae"
 nvidia_blacklist_file = "/etc/modprobe.d/nvidia-blacklist.conf"
 
 class Panda():
-    '''Pardus Alternative Driver Administration'''
+    '''Pisilinux Alternative Driver Administration'''
     def __init__ (self, default_args=None):
         self.driver_name = None
         self.kernel_flavors = None
@@ -92,7 +92,7 @@ class Panda():
         if not kernel_list:
             if self.kernel_flavors is None:
                 self.__get_kernel_flavors()
-            kernel_list = self.kernel_flavors.keys()
+            kernel_list = list(self.kernel_flavors.keys())
 
         if self.driver_name is None:
             self.__get_primary_driver()
@@ -139,8 +139,7 @@ class Panda():
         if not self.driver_name == "Not defined":
             # List only kernel_flavors, we assume that a kernel flavor begins with
             # "module-" and does not end with "-userspace"
-            module_packages = filter(lambda x: x.startswith("module-") and not x.endswith("-userspace"), \
-                                    self.driver_packages[self.driver_name])
+            module_packages = [x for x in self.driver_packages[self.driver_name] if x.startswith("module-") and not x.endswith("-userspace")]
 
             # Kernel_list contains currently used kernel modules
             # Kernel_flavors contains predefined kernel modules
@@ -162,7 +161,7 @@ class Panda():
 
     def get_all_driver_packages(self):
         '''Extract lists from the driver dict and return one unique single list'''
-        drivers = sum([x for x in self.driver_packages.values()], [])
+        drivers = sum([x for x in list(self.driver_packages.values())], [])
 
         return list(set(drivers))
 
@@ -188,12 +187,12 @@ class Panda():
         try:
             retcode = call("alternatives --set libGL /usr/lib/%s/libGL.so.1.2.0" % arg, shell=True)
         except OSError as e:
-            print >>sys.stderr, "alternatives --set libGL /usr/lib/%s/libGL.so.1.2.0 failed:" % arg, e
+            print("alternatives --set libGL /usr/lib/%s/libGL.so.1.2.0 failed:" % arg, e, file=sys.stderr)
         if not arg in ["mesa", "nvidia-current", "fglrx"]: return
         try:
             retcode = call("alternatives --set libGL-32bit /usr/lib32/%s/libGL.so.1.2.0" % arg, shell=True)
         except OSError as e:
-            print >>sys.stderr, "alternatives --set libGL-32bit /usr/lib32/%s/libGL.so.1.2.0 failed:" % arg, e
+            print("alternatives --set libGL-32bit /usr/lib32/%s/libGL.so.1.2.0 failed:" % arg, e, file=sys.stderr)
 
     ########################################
     # Functions essential for grub parsing #
@@ -262,7 +261,7 @@ class Panda():
     def update_grub_default_entries(self, arg):
         '''Edit grub default file to enable the use of propretiary graphic card drivers'''
         if arg == "vendor" and self.os_driver is None:
-            print "I'm not able to install vendor drivers"
+            print("I'm not able to install vendor drivers")
             return
         elif arg:
             pass
@@ -336,7 +335,7 @@ class Panda():
         try:
             retcode = call("grub2-mkconfig -o %s" % grub_new, shell=True)
         except OSError as e:
-            print >>sys.stderr, "Creating %s failed:" % grub_new, e
+            print("Creating %s failed:" % grub_new, e, file=sys.stderr)
         else:
             shutil.copy2(grub_new, grub_file)
 
@@ -354,7 +353,7 @@ class Panda():
         kernel_version = self.kernel_flavors["kernel"] # This one should change
 
         if arg == "vendor" and self.os_driver is None:
-            print "I'm not able to install vendor drivers"
+            print("I'm not able to install vendor drivers")
             return
         elif arg:
             pass
@@ -424,9 +423,9 @@ if __name__ == '__main__':
     p = Panda()
     
     # Test cases
-    print p.get_grub_state()
-    print p.get_all_driver_packages()
-    print p.get_blacklisted_module()
+    print(p.get_grub_state())
+    print(p.get_all_driver_packages())
+    print(p.get_blacklisted_module())
 #    print p.update_grub_entries("vendor")
-    print p.update_system_files("vendor")
-    print p.get_needed_driver_packages(installable=False)
+    print(p.update_system_files("vendor"))
+    print(p.get_needed_driver_packages(installable=False))
