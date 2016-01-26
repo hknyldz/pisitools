@@ -658,7 +658,7 @@ def manage_service(service, command):
 
 def get_service_list(bus, _all=False):
     """Requests and returns the list of system services through COMAR."""
-    obj = bus.get_object("com.pisilinux.comar", "/", introspect=False)
+    obj = bus.get_object("org.pisilinux.comar", "/", introspect=False)
     services = obj.listModelApplications("System.Service",
                                          dbus_interface="com.pisilinux.comar")
     if _all:

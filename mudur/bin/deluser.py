@@ -32,10 +32,10 @@ def connectToDBus():
         return True
 
 def delUser():
-    obj = bus.get_object("com.pisilinux.comar", "/package/baselayout")
+    obj = bus.get_object("org.pisilinux.comar", "/package/baselayout")
     try:
         obj.deleteUser(user["uid"], user["deletefiles"],
-                    dbus_interface="com.pisilinux.comar.User.Manager")
+                    dbus_interface="org.pisilinux.comar.User.Manager")
     except dbus.DBusException as e:
         fail("Error: %s." % e)
 

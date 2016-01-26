@@ -46,12 +46,12 @@ def connectToDBus():
         return True
 
 def addUser():
-    obj = bus.get_object("com.pisilinux.comar", "/package/baselayout")
+    obj = bus.get_object("org.pisilinux.comar", "/package/baselayout")
     try:
         obj.addUser(user["uid"], user["username"], user["realname"],
                     user["home"], user["shell"], user["password"],
                     user["groups"], user["grants"], user["blocks"],
-                    dbus_interface="com.pisilinux.comar.User.Manager")
+                    dbus_interface="org.pisilinux.comar.User.Manager")
     except dbus.DBusException as e:
         fail("Error: %s" % e)
 
