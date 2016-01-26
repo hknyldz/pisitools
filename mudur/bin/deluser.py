@@ -16,7 +16,7 @@ user = {"uid": None,
 }
 
 def fail(_message):
-    print _message
+    print(_message)
     sys.exit(1)
 
 def connectToDBus():
@@ -32,11 +32,11 @@ def connectToDBus():
         return True
 
 def delUser():
-    obj = bus.get_object("tr.org.pardus.comar", "/package/baselayout")
+    obj = bus.get_object("com.pisilinux.comar", "/package/baselayout")
     try:
         obj.deleteUser(user["uid"], user["deletefiles"],
-                    dbus_interface="tr.org.pardus.comar.User.Manager")
-    except dbus.DBusException, e:
+                    dbus_interface="com.pisilinux.comar.User.Manager")
+    except dbus.DBusException as e:
         fail("Error: %s." % e)
 
 

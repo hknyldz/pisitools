@@ -70,7 +70,7 @@ USAGE = """\
 """ % (sys.argv[0], sys.argv[0], "; ".join(DEFAULT_CONFIG_DIRS_SO))
     
 def usage():
-    print USAGE
+    print(USAGE)
     sys.exit(0)
 
 if __name__ == "__main__":
@@ -145,4 +145,4 @@ if __name__ == "__main__":
                 # 
                 if len(errors) == cerr: create(*fields)
 
-    print "\n".join(errors)
+    print("\n".join(errors))

@@ -31,7 +31,7 @@ default_mount_dir = "/mnt"
 
 excluded_file_systems = ("proc", "tmpfs", "sysfs", "linux-swap", "swap", "nfs", "nfs4", "cifs")
 
-pardus_labels = ("PARDUS_ROOT", "PARDUS_HOME", "PARDUS_SWAP")
+pisilinux_labels = ("PISILINUX_ROOT", "PISILUNUX_HOME", "PISILINUX_SWAP")
 
 # Utility functions
 
@@ -222,26 +222,26 @@ class Fstab:
                 continue
             elif node.startswith("UUID="):
                 uuid = node.split("=", 1)[1]
-                if not self.partitions.has_key(blockNameByUuid(uuid)):
+                if blockNameByUuid(uuid) not in self.partitions:
                     removal.append(node)
             elif node.startswith("LABEL="):
                 label = node.split("=", 1)[1]
-                if label in pardus_labels:
-                    # Labelled Pardus system partitions are never removed
+                if label in pisilinux_labels:
+                    # Labelled Pisilinux system partitions are never removed
                     continue
-                if not self.partitions.has_key(blockNameByLabel(label)):
+                if blockNameByLabel(label) not in self.partitions:
                     removal.append(node)
             elif node.startswith("UUID="):
                 uuid = node.split("=", 1)[1]
-                if not self.partitions.has_key(blockNameByUuid(uuid)):
+                if blockNameByUuid(uuid) not in self.partitions:
                     removal.append(node)
             else:
-                if not self.partitions.has_key(node):
+                if node not in self.partitions:
                     removal.append(node)
-        map(self.removeEntry, removal)
+        list(map(self.removeEntry, removal))
 
         # Append all other existing non-removable partitions
-        mounted = set(map(lambda x: x.device_node, self.entries))
+        mounted = set([x.device_node for x in self.entries])
         for part in self.partitions:
             if not part in mounted:
                 if part in self.labels:
@@ -258,13 +258,13 @@ class Fstab:
 def refresh_fstab(path=None, debug=False):
     f = Fstab(path)
     if debug:
-        print "Fstab file:", f.path
-        print "--- Current table ---"
-        print f
+        print(("Fstab file:", f.path))
+        print("--- Current table ---")
+        print(f)
     f.refresh()
     if debug:
-        print "--- Refreshed table ---"
-        print f
+        print("--- Refreshed table ---")
+        print(f)
     else:
         f.write()
 
