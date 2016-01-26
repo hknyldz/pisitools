@@ -1,6 +1,6 @@
 <comarModel>
     <interface name="Core">
-        <method name="register" action_id="tr.org.pardus.comar.register">
+        <method name="register" action_id="org.pisilinux.comar.register">
             <arg name="model" type="s" direction="in"/>
             <arg name="package" type="s" direction="in"/>
             <arg name="script" type="s" direction="in"/>

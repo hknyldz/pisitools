@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.pisilinux.comar2
+Exec=/usr/sbin/comar -i -b org.pisilinux.comar2
+User=root
