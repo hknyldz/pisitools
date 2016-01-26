@@ -16,7 +16,7 @@
 
 import glob
 import os
-import pickle
+import cPickle
 import sys
 import pisi
 
@@ -41,14 +41,14 @@ if __name__ == "__main__":
 
 
     for p in file_list:
-        print("Processing %s.." % p)
-        for f in [x for x in pisi.package.Package(p).get_files().list if x.type=="executable"]:
+        print "Processing %s.." % p
+        for f in filter(lambda x:x.type=="executable", pisi.package.Package(p).get_files().list):
             fpath = os.path.join("/", f.path)
             if os.access(fpath, os.X_OK):
                 d[fpath] = pisi.util.split_package_filename(os.path.basename(p))[0]
 
     o = open("../data/packages.db", "wb")
-    pickle.Pickler(o, protocol=2)
-    pickle.dump(d, o, protocol=2)
+    cPickle.Pickler(o, protocol=2)
+    cPickle.dump(d, o, protocol=2)
     o.close()
 
