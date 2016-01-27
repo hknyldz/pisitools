@@ -11,7 +11,7 @@
 #
 
 modules_s = set(dir())
-from pardus import *
+from pisilinux import *
 modules_s = set(dir()) - modules_s - set(["modules_s"])
 
 import inspect
@@ -21,37 +21,37 @@ import re
 def print_functions(m):
     for f in inspect.getmembers(m, inspect.isfunction):
 
-        print f[0],
+        print(f[0], end=' ')
         args = inspect.getargspec(f[1])[0]
         if args:
-            print "(" + ",".join(args) + ")"
+            print("(" + ",".join(args) + ")")
         else:
-            print "()"
+            print("()")
 
         doc = inspect.getdoc(f[1])
         if doc:
-            print doc
-        print
+            print(doc)
+        print()
 
 def print_modules(modules):
     for m in modules:
-        s = `m`
+        s = repr(m)
         r = re.compile("module '.*' from").search(s)
-        print s[r.start():r.end()][:-5].capitalize()
-        print "-"*40
-        print m.__doc__
-        print
+        print(s[r.start():r.end()][:-5].capitalize())
+        print("-"*40)
+        print(m.__doc__)
+        print()
 
         pkg_modules = [x[1] for x in inspect.getmembers(m, inspect.ismodule)
-                       if "site-packages/pardus" in `x[1]` and x[0]]
+                       if "site-packages/pisilinux" in repr(x[1]) and x[0]]
         print_modules(pkg_modules)
 
         print_functions(m)
-        print
-        print
+        print()
+        print()
 
 if __name__ == "__main__":
     modules = []
     for s in modules_s:
-        modules.append(__import__("pardus."+s, globals(), locals(), [""]))
+        modules.append(__import__("pisilinux."+s, globals(), locals(), [""]))
     print_modules(modules)    

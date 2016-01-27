@@ -31,7 +31,7 @@ class FileLock:
 
         self.fd = os.open(self.filename, os.O_WRONLY | os.O_CREAT, 0600)
         if self.fd == -1:
-            raise IOError, "Cannot create lock file"
+            raise IOError("Cannot create lock file")
 
         while True:
             try:
@@ -46,4 +46,3 @@ class FileLock:
 
     def unlock(self):
         fcntl.flock(self.fd, fcntl.LOCK_UN)
-

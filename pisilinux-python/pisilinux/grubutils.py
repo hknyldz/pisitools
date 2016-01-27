@@ -37,7 +37,7 @@ class grubEntry:
 
     def listCommands(self):
         """Returns list of commands used in entry"""
-        return map(lambda x: x.key, self.commands)
+        return [x.key for x in self.commands]
 
     def setCommand(self, key, value, opts=[], append=False):
         """Adds a new command to entry. Optional append argument allows addition of multiple commands like 'map'."""
@@ -47,7 +47,7 @@ class grubEntry:
 
     def getCommand(self, key, only_last=True):
         """Returns command object. If only_last is False, returns a list of commands named 'key'."""
-        commands = filter(lambda x: x.key == key, self.commands)
+        commands = [x for x in self.commands if x.key == key]
         if only_last:
             try:
                 return commands[-1]
@@ -57,7 +57,7 @@ class grubEntry:
 
     def unsetCommand(self, key):
         """Removes 'key' from commands."""
-        self.commands = filter(lambda x: x.key != key, self.commands)
+        self.commands = [x for x in self.commands if x.key != key]
 
     def __str__(self):
         conf = []
@@ -153,7 +153,7 @@ class grubConf:
                 conf.append("# %s" % h)
             conf.append("")
         if self.options:
-            for key, value in self.options.iteritems():
+            for key, value in self.options.items():
                 line = "%s %s" % (key, value)
                 conf.append(line)
             conf.append("")
@@ -170,7 +170,7 @@ class grubConf:
 
     def listOptions(self):
         """Returns list of options."""
-        return self.options.keys()
+        return list(self.options.keys())
 
     def setOption(self, key, value):
         """Sets an option."""
@@ -186,11 +186,11 @@ class grubConf:
 
     def getAllOptions(self):
         """Returns all options."""
-        return ["%s %s" % (key, value) for key, value in self.options.items()]
+        return ["%s %s" % (key, value) for key, value in list(self.options.items())]
 
     def listEntries(self):
         """Returns a list of entries."""
-        return map(lambda x: x.title, self.entries)
+        return [x.title for x in self.entries]
 
     def addEntry(self, entry, index=-1):
         """Adds an entry object."""

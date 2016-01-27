@@ -71,7 +71,7 @@ def filterDict(rules_dict, allowed_chains={}):
                 continue
             chain = rule.split()[1]
             if len(allowed_chains[table]):
-                if max(map(lambda x: fnmatch.fnmatch(chain, x), allowed_chains[table])):
+                if max([fnmatch.fnmatch(chain, x) for x in allowed_chains[table]]):
                     rdict[table].append(rule)
     return rdict
 

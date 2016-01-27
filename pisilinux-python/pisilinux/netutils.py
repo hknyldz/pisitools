@@ -18,8 +18,8 @@ import fcntl
 import struct
 import subprocess
 import time
-import pardus.csapi
-from pardus.deviceutils import idsQuery
+import pisilinux.csapi
+from pisilinux.deviceutils import idsQuery
 
 # From <bits/ioctls.h>
 SIOCADDRT = 0x890B          # add routing table entry
@@ -356,7 +356,7 @@ class Route:
     """Network routing control class"""
     def delete(self, gw, dst = "0.0.0.0", mask = "0.0.0.0"):
         try:
-            pardus.csapi.changeroute(SIOCDELRT, gw, dst, mask)
+            pisilinux.csapi.changeroute(SIOCDELRT, gw, dst, mask)
         except:
             pass
 
@@ -369,7 +369,7 @@ class Route:
         self.deleteDefault()
         self.delete(gw)
         try:
-            pardus.csapi.changeroute(SIOCADDRT, gw, dst, mask)
+            pisilinux.csapi.changeroute(SIOCADDRT, gw, dst, mask)
         except:
             pass
 

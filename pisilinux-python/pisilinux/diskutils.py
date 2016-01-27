@@ -64,7 +64,7 @@ class EDD:
                 if sig:
                     sigs[bios_num] = sig
         else:
-            print "please insert edd module"
+            print("please insert edd module")
         return sigs
 
     def list_mbr_signatures(self):
@@ -93,7 +93,7 @@ def getDeviceMap():
     edd_list = edd.list_edd_signatures()
 
     # sort keys
-    edd_keys = edd_list.keys()
+    edd_keys = list(edd_list.keys())
     edd_keys.sort()
 
     devices = []
@@ -250,7 +250,7 @@ def getPartitions():
             List of partitions which includes metadata of partition
             or None (if blkid not found) e.g.:
 
-            {'/dev/sda1': {label  :'PARDUS_ROOT', # (if exists)
+            {'/dev/sda1': {label  :'PISILINUX_ROOT', # (if exists)
                            uuid   :'b3cf94b9-ed79-43e2-8b22-b9054a529f01',
                            fstype :'ext4'}, ... }
     """
@@ -262,7 +262,7 @@ def getPartitions():
     try:
         for line in cmd.readlines():
             partition = line.split(':')[0]
-            if not result.has_key(partition):
+            if partition not in result:
                 result[partition] = {}
                 for info in line.split():
                     if info.startswith('LABEL='):
