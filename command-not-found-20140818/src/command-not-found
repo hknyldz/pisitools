@@ -11,7 +11,7 @@
 import sys
 import os
 import locale
-import cPickle
+import pickle
 
 import gettext
 __trans = gettext.translation("command-not-found", fallback=True)
@@ -22,12 +22,12 @@ try:
     if __name__ == "__main__":
         try:
             # unpickle data
-            d = cPickle.Unpickler(open("/var/db/command-not-found/packages.db", "rb")).load()
+            d = pickle.Unpickler(open("/var/db/command-not-found/packages.db", "rb")).load()
 
             # Dump database if --dump (needed by krunner pisi plugin)
             if "--dump" in sys.argv:
-                for path, package in d.items():
-                    print "%s,%s" % (path, package)
+                for path, package in list(d.items()):
+                    print("%s,%s" % (path, package))
                 sys.exit(0)
 
             cmd = sys.argv[1]
@@ -35,7 +35,7 @@ try:
             # check path
             for dir in os.getenv("PATH").split(":"):
                 cmd_path = os.path.join(dir, os.path.basename(cmd))
-                if d.has_key(cmd_path):
+                if cmd_path in d:
                     break
 
             # if found in loop, we'll get the package name
@@ -44,22 +44,22 @@ try:
 
             # inform the user
 
-            print _("The program '%s' is not installed on your system.") % package,
+            print(_("The program '%s' is not installed on your system.") % package, end=' ')
 
             if os.geteuid() == 0:
                 # Has uid 0, can install the package
-                print _("You can install it using package manager or by typing:")
-                print "pisi it %s" % package
+                print(_("You can install it using package manager or by typing:"))
+                print("pisi it %s" % package)
 
             elif "wheel" in os.popen("groups").read().split() and package != "sudo":
                 # Can sudo
-                print _("You can install it using package manager or by typing:")
-                print "sudo pisi it %s" % package
+                print(_("You can install it using package manager or by typing:"))
+                print("sudo pisi it %s" % package)
 
             else:
-                print _("You can install it using package manager.")
+                print(_("You can install it using package manager."))
 
         except KeyError:
-            print _("Command not found!")
+            print(_("Command not found!"))
 finally:
     sys.exit(127)
