@@ -65,7 +65,7 @@ class Install(install):
             if not name.endswith('.po'):
                 continue
             lang = name[:-3]
-            print "Installing '%s' translations..." % lang
+            print("Installing '%s' translations..." % lang)
             os.popen("msgfmt po/%s.po -o po/%s.mo" % (lang, lang))
             if not self.root:
                 self.root = "/"
