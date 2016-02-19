@@ -4,7 +4,7 @@
 import os
 import sys
 import glob
-import pisi
+import pisilinux
 import shutil
 from subprocess import call
 
